@@ -1,0 +1,31 @@
+#!/bin/sh
+# LXH,MXY modified
+	
+PLATFORM="iPhoneOS"
+SDK_VERSION="8.4"
+
+
+export DEVROOT=/Applications/Xcode.app/Contents/Developer
+
+export SDKROOT=$DEVROOT/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDK_VERSION}.sdk
+export CC=$DEVROOT/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+export AS=$DEVROOT/Toolchains/XcodeDefault.xctoolchain/usr/bin/as
+
+COMMONFLAGS="-pipe -gdwarf-2 -no-cpp-precomp -isysroot ${SDKROOT} -marm -fPIC"
+export LDFLAGS="${COMMONFLAGS} -fPIC"
+export CFLAGS="${COMMONFLAGS} -fvisibility=hidden"
+export CXXFLAGS="${COMMONFLAGS} -fvisibility=hidden -fvisibility-inlines-hidden"
+
+
+echo "Building arm64..."
+
+make clean
+./configure \
+    --extra-cflags='-I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/usr/include -arch arm64 -miphoneos-version-min=6.0 -mthumb' \
+    --extra-ldflags='-L/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/usr/lib -arch arm64 -miphoneos-version-min=6.0' \
+    --build=111  --host=arm64 --target=arm64 \
+
+make
+make install
+
+cd ..

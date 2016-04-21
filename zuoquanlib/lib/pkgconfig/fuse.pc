@@ -1,0 +1,11 @@
+prefix=/Users/Apple/Downloads/fuse-macosx-master/zuoquanlib
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: fuse
+Description: Filesystem in Userspace
+Version: 2.9.0-pre0
+Libs: -L${libdir} -lfuse
+Libs.private: -pthread  
+Cflags: -I${includedir}/fuse -D_FILE_OFFSET_BITS=64 -D__DARWIN_64_BIT_INO_T=0
